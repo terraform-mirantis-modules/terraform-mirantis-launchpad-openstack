@@ -1,0 +1,1 @@
+# Module creating worker machines in OpenStack

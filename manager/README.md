@@ -1,0 +1,1 @@
+# Module creating manager machines in OpenStack
