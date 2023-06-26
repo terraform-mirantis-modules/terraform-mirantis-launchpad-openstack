@@ -65,7 +65,12 @@ output "hosts" {
   description = "All hosts in the cluster"
 }
 
-output "mke_ui_endpoint" {
+output "mke_lb" {
   value       = "https://${module.manager.lb_ip}"
   description = "The LB path for the MKE endpoint"
+}
+
+output "cluster_name" {
+  value       = local.cluster_name
+  description = "The name of the cluster"
 }
