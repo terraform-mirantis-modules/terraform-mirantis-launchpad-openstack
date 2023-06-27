@@ -13,6 +13,39 @@ locals {
       privateInterface = local.interface
     }
   ]
+  msrs = [
+    for ip in module.msr.public_ips : {
+      ssh : {
+        address = ip
+        user    = local.user
+        keyPath = var.ssh_key_path
+        port    = 22
+      }
+      role             = "msr"
+      privateInterface = local.interface
+      mcrConfig : {
+        debug : true
+        log-opts : {
+          max-size : "10m"
+          max-file : "3"
+        }
+        default-address-pools : [
+          {
+            base : "172.20.0.0/16"
+            size : 16
+          },
+          {
+            base : "172.21.0.0/16"
+            size : 16
+          },
+          {
+            base : "172.22.0.0/16"
+            size : 16
+          }
+        ]
+      }
+    }
+  ]
   workers = [
     for ip in module.worker.public_ips : {
       ssh : {
@@ -27,7 +60,7 @@ locals {
   ]
   launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/mke/v1.4"
-    kind       = "mke"
+    kind       = try(module.msr.cluster_kind, "mke")
     metadata = {
       name = local.cluster_name
     }
@@ -44,15 +77,24 @@ locals {
           "--cloud-provider=external",
         ])
       }
+      msr = {
+        version    = var.msr_version
+        imageRepo  = var.image_repo
+        replicaIDs = "sequential"
+        installFlags : try([
+          "--ucp-insecure-tls",
+          "--dtr-external-url ${module.msr.lb_ip}",
+        ])
+      }
       mcr = {
         version = var.mcr_version
         channel = "stable"
         repoURL = "https://repos.mirantis.com"
       }
-      hosts = concat(local.managers, local.workers)
+      hosts = concat(local.managers, local.msrs, local.workers)
     }
   }
-  hosts = concat(local.managers, local.workers)
+  hosts = concat(local.managers, local.msrs, local.workers)
 
 }
 
@@ -61,13 +103,18 @@ output "mke_cluster" {
 }
 
 output "hosts" {
-  value       = concat(local.managers, local.workers)
+  value       = concat(local.managers, local.msrs, local.workers)
   description = "All hosts in the cluster"
 }
 
 output "mke_lb" {
   value       = "https://${module.manager.lb_ip}"
   description = "The LB path for the MKE endpoint"
+}
+
+output "msr_lb" {
+  value       = "https://${module.msr.lb_ip}"
+  description = "The LB path for the MSR endpoint"
 }
 
 output "cluster_name" {
