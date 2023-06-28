@@ -1,15 +1,4 @@
-terraform {
-  required_version = ">= 1.4.5"
-  required_providers {
-    openstack = {
-      source  = "terraform-provider-openstack/openstack"
-      version = "1.48.0"
-    }
-  }
-}
-
 locals {
-
   docker-int-net = {
     name        = "${var.cluster_name}-int-net"
     subnet_name = "${var.cluster_name}-net-sub01",

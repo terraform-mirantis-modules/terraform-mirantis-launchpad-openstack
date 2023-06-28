@@ -10,6 +10,12 @@ variable "mke_version" {
   description = "The MKE version to be used in the output"
 }
 
+variable "msr_version" {
+  type        = string
+  default     = "2.9.9"
+  description = "The MSR version to be used in the output"
+}
+
 variable "mcr_version" {
   type        = string
   default     = "23.0.3"
@@ -64,6 +70,12 @@ variable "manager_count" {
   description = "The number of manager machines to be created"
 }
 
+variable "msr_count" {
+  type        = number
+  default     = 1
+  description = "The number of MSR machines to be created"
+}
+
 variable "worker_count" {
   type        = number
   default     = 3
@@ -83,11 +95,21 @@ variable "worker_image_name" {
 }
 
 variable "manager_instance_type" {
-  default = "kaas.prod"
+  type        = string
+  default     = "kaas.prod"
+  description = "The instance type for the Manager nodes"
 }
 
 variable "worker_instance_type" {
-  default = "kaas.prod"
+  type        = string
+  default     = "kaas.prod"
+  description = "The instance type for the Worker nodes"
+}
+
+variable "msr_instance_type" {
+  type        = string
+  default     = "kaas.prod"
+  description = "The instance type for the MSR nodes"
 }
 
 variable "manager_volume_size" {
@@ -155,7 +177,3 @@ variable "openstack_region" {
   description = "This is where you have to mention region"
   default     = "RegionOne"
 }
-
-### UNUSED VARIABLES
-# variable "publicKey" {}
-# variable "win_worker_count" {}
