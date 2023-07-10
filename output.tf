@@ -58,6 +58,19 @@ locals {
       privateInterface = local.interface
     }
   ]
+  win_workers = [
+    for ip in module.win_worker.public_ips : {
+      winRM : {
+        address  = ip
+        user     = "Administrator"
+        password = var.windows_administrator_password
+        useHTTPS = true
+        insecure = true
+      }
+      role             = "worker"
+      privateInterface = "Ethernet 2"
+    }
+  ]
   launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/mke/v1.4"
     kind       = try(module.msr.cluster_kind, "mke")
@@ -87,14 +100,16 @@ locals {
         ])
       }
       mcr = {
-        version = var.mcr_version
-        channel = "stable"
-        repoURL = "https://repos.mirantis.com"
+        version           = var.mcr_version
+        channel           = "stable"
+        installURLLinux   = "https://get.mirantis.com/"
+        installURLWindows = "https://get.mirantis.com/install.ps1"
+        repoURL           = "https://repos.mirantis.com"
       }
-      hosts = concat(local.managers, local.msrs, local.workers)
+      hosts = concat(local.managers, local.msrs, local.workers, local.win_workers)
     }
   }
-  hosts = concat(local.managers, local.msrs, local.workers)
+  hosts = concat(local.managers, local.msrs, local.workers, local.win_workers)
 
 }
 
@@ -103,7 +118,7 @@ output "mke_cluster" {
 }
 
 output "hosts" {
-  value       = concat(local.managers, local.msrs, local.workers)
+  value       = concat(local.managers, local.msrs, local.workers, local.win_workers)
   description = "All hosts in the cluster"
 }
 
