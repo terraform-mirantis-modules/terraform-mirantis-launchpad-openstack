@@ -34,10 +34,10 @@ variable "dns_ip_list" {
   description = ""
 }
 
-variable "ssh_key_path" {
+variable "ssh_base_key_path" {
   type        = string
-  default     = "./ssh_keys/launchpad_key.pem"
-  description = "The path of the ssh key"
+  default     = "./ssh_keys"
+  description = "The path to the folder of the ssh key"
 }
 
 variable "admin_username" {

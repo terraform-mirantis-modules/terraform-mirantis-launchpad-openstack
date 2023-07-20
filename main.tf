@@ -23,19 +23,20 @@ resource "random_string" "random" {
   special     = false
 }
 
-resource "openstack_compute_keypair_v2" "key-pair" {
-  name = "launchpad_key"
-}
-
 locals {
   cluster_name   = var.cluster_name == "" ? random_string.random.result : var.cluster_name
   admin_username = var.admin_username == "" ? random_pet.admin_username.id : var.admin_username
   admin_password = var.admin_password == "" ? random_string.random.result : var.admin_password
+  ssh_key_path   = "${var.ssh_base_key_path}/${local.cluster_name}.pem"
+}
+
+resource "openstack_compute_keypair_v2" "key-pair" {
+  name = local.cluster_name
 }
 
 resource "local_file" "ssh_key" {
   content         = openstack_compute_keypair_v2.key-pair.private_key
-  filename        = var.ssh_key_path
+  filename        = local.ssh_key_path
   file_permission = "0600"
 }
 
