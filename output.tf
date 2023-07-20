@@ -6,7 +6,7 @@ locals {
       ssh : {
         address = ip
         user    = local.user
-        keyPath = var.ssh_key_path
+        keyPath = local.ssh_key_path
         port    = 22
       }
       role             = "manager"
@@ -18,7 +18,7 @@ locals {
       ssh : {
         address = ip
         user    = local.user
-        keyPath = var.ssh_key_path
+        keyPath = local.ssh_key_path
         port    = 22
       }
       role             = "msr"
@@ -51,7 +51,7 @@ locals {
       ssh : {
         address = ip
         user    = local.user
-        keyPath = var.ssh_key_path
+        keyPath = local.ssh_key_path
         port    = 22
       }
       role             = "worker"
@@ -108,12 +108,12 @@ output "hosts" {
 }
 
 output "mke_lb" {
-  value       = "https://${module.manager.lb_ip}"
+  value       = module.manager.lb_ip
   description = "The LB path for the MKE endpoint"
 }
 
 output "msr_lb" {
-  value       = "https://${module.msr.lb_ip}"
+  value       = module.msr.lb_ip
   description = "The LB path for the MSR endpoint"
 }
 
