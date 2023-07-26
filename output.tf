@@ -121,3 +121,8 @@ output "cluster_name" {
   value       = local.cluster_name
   description = "The name of the cluster"
 }
+
+output "subnet_id" {
+  value       = module.vnet.subnet_id
+  description = "MKE mahchines Openstack subnet ID"
+}
