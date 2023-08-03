@@ -124,5 +124,5 @@ output "cluster_name" {
 
 output "subnet_id" {
   value       = module.vnet.subnet_id
-  description = "MKE mahchines Openstack subnet ID"
+  description = "Internal Openstack subnet ID"
 }
