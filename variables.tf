@@ -64,6 +64,12 @@ variable "external_network_id" {
   description = "The external OpenStack network id"
 }
 
+variable "external_subnet_id" {
+  type        = string
+  default     = ""
+  description = "The external OpenStack subnet id"
+}
+
 variable "manager_count" {
   type        = number
   default     = 1

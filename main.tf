@@ -59,6 +59,7 @@ module "manager" {
   external_network_name = var.external_network_name
   internal_network_name = module.vnet.network_name
   internal_subnet_id    = module.vnet.subnet_id
+  external_subnet_id    = var.external_subnet_id
   base_sec_group_name   = module.vnet.base_security_group_name
 }
 
@@ -73,6 +74,7 @@ module "worker" {
   internal_network_name = module.vnet.network_name
   internal_subnet_id    = module.vnet.subnet_id
   base_sec_group_name   = module.vnet.base_security_group_name
+  external_subnet_id    = var.external_subnet_id
 }
 
 module "msr" {
@@ -85,5 +87,6 @@ module "msr" {
   external_network_name = var.external_network_name
   internal_network_name = module.vnet.network_name
   internal_subnet_id    = module.vnet.subnet_id
+  external_subnet_id    = var.external_subnet_id
   base_sec_group_name   = module.vnet.base_security_group_name
 }

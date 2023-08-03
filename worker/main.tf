@@ -24,6 +24,7 @@ EOF
 resource "openstack_networking_floatingip_v2" "docker-worker" {
   count = var.worker_count
   pool  = var.external_network_name
+  subnet_id = var.external_subnet_id
 }
 
 resource "openstack_compute_floatingip_associate_v2" "docker-worker" {

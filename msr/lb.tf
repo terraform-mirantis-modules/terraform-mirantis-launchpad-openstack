@@ -28,6 +28,7 @@ resource "openstack_lb_member_v2" "lb_member_msr" {
 
 resource "openstack_networking_floatingip_v2" "msr_lb_vip" {
   pool = var.external_network_name
+  subnet_id = var.external_subnet_id
 }
 
 resource "openstack_networking_floatingip_associate_v2" "msr_vip" {
