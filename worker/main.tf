@@ -9,16 +9,6 @@ resource "openstack_compute_instance_v2" "docker-worker" {
   network {
     name = var.internal_network_name
   }
-
-  user_data = <<EOF
-#!/bin/bash
-# Use full qualified private DNS name for the host name.  Kube wants it this way.
-HOSTNAME=$(curl http://169.254.169.254/latest/meta-data/hostname)
-echo $HOSTNAME > /etc/hostname
-sed -i "s|\(127\.0\..\.. *\)localhost|\1$HOSTNAME localhost|" /etc/hosts
-hostname $HOSTNAME
-EOF
-
 }
 
 resource "openstack_networking_floatingip_v2" "docker-worker" {
