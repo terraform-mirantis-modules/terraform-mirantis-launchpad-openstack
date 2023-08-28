@@ -99,7 +99,8 @@ locals {
 }
 
 output "mke_cluster" {
-  value = yamlencode(local.launchpad_tmpl)
+  value       = yamlencode(local.launchpad_tmpl)
+  description = "The launchpad template in yaml format"
 }
 
 output "hosts" {
