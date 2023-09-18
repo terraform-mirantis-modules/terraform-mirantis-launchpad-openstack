@@ -77,6 +77,20 @@ module "worker" {
   external_subnet_id    = var.external_subnet_id
 }
 
+module "win_worker" {
+  source                         = "./win_worker"
+  worker_count                   = var.win_worker_count
+  cluster_name                   = local.cluster_name
+  ssh_key                        = openstack_compute_keypair_v2.key-pair.name
+  win_worker_image_name          = var.win_worker_image_name
+  win_worker_instance_type       = var.win_worker_instance_type
+  external_network_name          = var.external_network_name
+  internal_network_name          = module.vnet.network_name
+  internal_subnet_id             = module.vnet.subnet_id
+  base_sec_group_name            = module.vnet.base_security_group_name
+  windows_administrator_password = var.windows_administrator_password
+}
+
 module "msr" {
   source                = "./msr"
   msr_count             = var.msr_count

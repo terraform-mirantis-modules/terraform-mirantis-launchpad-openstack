@@ -183,3 +183,24 @@ variable "openstack_region" {
   description = "This is where you have to mention region"
   default     = "RegionOne"
 }
+
+variable "win_worker_count" {
+  type    = number
+  default = 0
+}
+
+variable "windows_administrator_password" {
+  type    = string
+  default = "M1rantis@dmin"
+}
+
+variable "win_worker_image_name" {
+  type        = string
+  description = "The image name for the Windows worker instances"
+}
+
+variable "win_worker_instance_type" {
+  type        = string
+  default     = "kaas.prod"
+  description = "The instance type for the Windows Worker nodes"
+}
