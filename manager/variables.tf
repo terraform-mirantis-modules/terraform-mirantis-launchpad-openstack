@@ -18,6 +18,8 @@ variable "internal_network_name" {}
 
 variable "internal_subnet_id" {}
 
+variable "internal_subnet_cidr" {}
+
 variable "external_subnet_id" {}
 
 variable "base_sec_group_name" {}

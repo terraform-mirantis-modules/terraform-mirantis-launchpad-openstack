@@ -50,6 +50,7 @@ module "vnet" {
 }
 
 module "manager" {
+  depends_on = [ module.vnet ]
   source                = "./manager"
   manager_count         = var.manager_count
   cluster_name          = local.cluster_name
@@ -59,6 +60,7 @@ module "manager" {
   external_network_name = var.external_network_name
   internal_network_name = module.vnet.network_name
   internal_subnet_id    = module.vnet.subnet_id
+  internal_subnet_cidr  = module.vnet.int_cidr
   external_subnet_id    = var.external_subnet_id
   base_sec_group_name   = module.vnet.base_security_group_name
 }
