@@ -147,3 +147,30 @@ resource "openstack_networking_secgroup_rule_v2" "manager-int-kube-api" {
   remote_ip_prefix  = var.internal_subnet_cidr
   security_group_id = openstack_networking_secgroup_v2.docker-manager.id
 }
+resource "openstack_networking_secgroup_rule_v2" "manager-int-sf" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  port_range_min    = 12390
+  port_range_max    = 12390
+  protocol          = "tcp"
+  remote_ip_prefix  = var.internal_subnet_cidr
+  security_group_id = openstack_networking_secgroup_v2.docker-manager.id
+}
+resource "openstack_networking_secgroup_rule_v2" "manager-int-kube-contoller-manager" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  port_range_min    = 12391
+  port_range_max    = 12391
+  protocol          = "tcp"
+  remote_ip_prefix  = var.internal_subnet_cidr
+  security_group_id = openstack_networking_secgroup_v2.docker-manager.id
+}
+resource "openstack_networking_secgroup_rule_v2" "manager-int-etcd-ca" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  port_range_min    = 12392
+  port_range_max    = 12392
+  protocol          = "tcp"
+  remote_ip_prefix  = var.internal_subnet_cidr
+  security_group_id = openstack_networking_secgroup_v2.docker-manager.id
+}
