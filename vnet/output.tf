@@ -13,3 +13,7 @@ output "subnet_id" {
 output "network_name" {
   value = openstack_networking_network_v2.docker-int.name
 }
+
+output "int_cidr" {
+  value = openstack_networking_subnet_v2.docker-int-subnet.cidr
+}

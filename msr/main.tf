@@ -5,7 +5,7 @@ resource "openstack_compute_instance_v2" "docker-msr" {
   image_name      = var.msr_image_name
   flavor_name     = var.msr_instance_type
   key_pair        = var.ssh_key
-  security_groups = [var.base_sec_group_name, openstack_networking_secgroup_v2.docker-msr.name]
+  security_groups = [var.base_sec_group_name]
   network {
     name = var.internal_network_name
   }
