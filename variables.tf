@@ -48,7 +48,6 @@ variable "admin_username" {
 
 variable "admin_password" {
   type        = string
-  default     = "Mirantisadmin"
   description = "The MKE password use in the output"
 }
 
@@ -191,7 +190,7 @@ variable "win_worker_count" {
 
 variable "windows_administrator_password" {
   type    = string
-  default = "M1rantis@dmin"
+  default = ""
 }
 
 variable "win_worker_image_name" {
