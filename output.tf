@@ -13,8 +13,8 @@ locals {
       privateInterface = local.interface
     }
   ]
-  msrs = [
-    for ip in module.msr.public_ips : {
+  msrs = var.msr_count > 0 ? [
+    for ip in module.msr[0].public_ips : {
       ssh : {
         address = ip
         user    = local.user
@@ -45,9 +45,9 @@ locals {
         ]
       }
     }
-  ]
-  workers = [
-    for ip in module.worker.public_ips : {
+  ] : []
+  workers = var.worker_count > 0 ? [
+    for ip in module.worker[0].public_ips : {
       ssh : {
         address = ip
         user    = local.user
@@ -57,9 +57,9 @@ locals {
       role             = "worker"
       privateInterface = local.interface
     }
-  ]
-  win_workers = [
-    for ip in module.win_worker.public_ips : {
+  ] : []
+  win_workers = var.win_worker_count > 0 ? [
+    for ip in module.win_worker[0].public_ips : {
       winRM : {
         address  = ip
         user     = "Administrator"
@@ -70,7 +70,11 @@ locals {
       role             = "worker"
       privateInterface = "Ethernet 2"
     }
-  ]
+  ] : []
+
+  msr_install_flags = var.msr_count > 0 ? concat(["--ucp-insecure-tls"], ["--dtr-external-url ${module.msr[0].lb_ip}"]) : []
+
+
   launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/mke/v1.4"
     kind       = try(module.msr.cluster_kind, "mke")
@@ -94,10 +98,7 @@ locals {
         version    = var.msr_version
         imageRepo  = var.image_repo
         replicaIDs = "sequential"
-        installFlags : try([
-          "--ucp-insecure-tls",
-          "--dtr-external-url ${module.msr.lb_ip}",
-        ])
+        installFlags : local.msr_install_flags
       }
       mcr = {
         version           = var.mcr_version
@@ -128,7 +129,7 @@ output "mke_lb" {
 }
 
 output "msr_lb" {
-  value       = module.msr.lb_ip
+  value       = var.msr_count > 0 ? module.msr[0].lb_ip : null
   description = "The LB path for the MSR endpoint"
 }
 

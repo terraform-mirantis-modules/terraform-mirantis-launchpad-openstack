@@ -50,7 +50,7 @@ module "vnet" {
 }
 
 module "manager" {
-  depends_on = [ module.vnet ]
+  depends_on            = [module.vnet]
   source                = "./manager"
   manager_count         = var.manager_count
   cluster_name          = local.cluster_name
@@ -66,6 +66,7 @@ module "manager" {
 }
 
 module "worker" {
+  count                 = var.worker_count > 0 ? 1 : 0
   source                = "./worker"
   worker_count          = var.worker_count
   cluster_name          = local.cluster_name
@@ -80,6 +81,7 @@ module "worker" {
 }
 
 module "win_worker" {
+  count                          = var.win_worker_count > 0 ? 1 : 0
   source                         = "./win_worker"
   worker_count                   = var.win_worker_count
   cluster_name                   = local.cluster_name
@@ -94,6 +96,7 @@ module "win_worker" {
 }
 
 module "msr" {
+  count                 = var.msr_count > 0 ? 1 : 0
   source                = "./msr"
   msr_count             = var.msr_count
   cluster_name          = local.cluster_name
