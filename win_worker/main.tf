@@ -65,11 +65,12 @@ EOF
   connection {
     type     = "winrm"
     user     = "Administrator"
-    password = var.administrator_password
+    password = var.windows_administrator_password
     timeout  = "10m"
     https    = "true"
     insecure = "true"
     port     = 5986
+    host     = self.network.0.fixed_ip_v4
   }
 
 }
